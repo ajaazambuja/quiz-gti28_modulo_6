@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulador de Elaboração do PDTIC — 20 Decisões</title>
+<style>
+:root{--n:#07366f;--o:#f58220;--bg:#f4f7fb;--g:#176b3a;--r:#a12b2b;--muted:#687487;--line:#d9e0ea}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#182333;line-height:1.5}
+header{background:linear-gradient(120deg,#052d5d,#084887);color:#fff;padding:34px 20px;border-bottom:7px solid var(--o)}
+.wrap,main{max-width:1000px;margin:auto}
+h1{margin:0 0 6px;font-size:clamp(28px,4vw,40px)}
+header p{margin:5px 0}.badge{display:inline-block;margin-top:8px;background:#ffffff1f;border:1px solid #ffffff55;border-radius:20px;padding:6px 11px;font-size:13px;font-weight:bold}
+main{padding:24px 16px 50px}
+.panel,.decision,.result{background:#fff;border-radius:14px;padding:20px;margin-bottom:17px;box-shadow:0 4px 16px #00000012}
+.role{border-top:5px solid var(--o)}.role h2,.decision h2,.result h2{color:var(--n);margin-top:0}
+.flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:15px}
+.flow span{padding:7px 10px;border-radius:7px;background:#edf2f8;color:var(--n);font-weight:bold}.flow b{color:var(--o)}
+.progress{height:9px;background:#e4e9ef;border-radius:8px;overflow:hidden}.progress>div{height:100%;background:var(--o);width:0;transition:.3s}
+.meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:14px;margin-bottom:7px;flex-wrap:wrap}
+.phasebar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:13px 0 2px}
+.phase{border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center;font-size:13px;color:var(--muted);font-weight:bold}
+.phase.active{background:#edf2f8;color:var(--n);border-color:#aebbd0}.phase.done{color:var(--g);border-color:#b8d8c4}
+.context{background:#f6f8fb;border-left:4px solid #9aa9bb;padding:12px 14px;border-radius:7px;margin:12px 0 16px}
+.option{display:block;border:1px solid var(--line);border-radius:9px;padding:11px 12px;margin:9px 0;cursor:pointer;transition:.15s}
+.option:hover{background:#f8fafc}.option input{margin-right:7px}.option.locked{cursor:default}
+.option.correct-choice{border-color:#78b68e;background:#f1faf4}.option.wrong-choice{border-color:#d39a9a;background:#fff6f6}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+button{border:0;border-radius:9px;padding:12px 16px;font-weight:bold;cursor:pointer}
+.primary{background:var(--n);color:#fff}.secondary{background:#e5eaf1;color:#172335}button:disabled{opacity:.5;cursor:not-allowed}
+.feedback{display:none;margin-top:15px;padding:13px;border-radius:9px}.good{display:block;background:#eaf7ef;color:var(--g);border-left:5px solid var(--g)}
+.wrong{display:block;background:#fff0f0;color:var(--r);border-left:5px solid var(--r)}
+.result{display:none;border-left:6px solid var(--o)}.result.show{display:block}.score{font-size:28px;font-weight:800;color:var(--n)}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}.summary-card{background:#f6f8fb;border:1px solid var(--line);border-radius:10px;padding:13px}
+.summary-card b{color:var(--n)}.summary-card span{display:block;font-size:24px;font-weight:800;margin-top:4px}
+.log{margin-top:15px}.log-item{border-top:1px solid var(--line);padding:11px 0}.log-item:first-child{border-top:0}.oktxt{color:var(--g);font-weight:bold}.badtxt{color:var(--r);font-weight:bold}
+.legend{font-size:14px;color:var(--muted)}footer{text-align:center;color:#687487;padding:18px}
+@media(max-width:650px){header{padding:26px 16px}.phasebar,.summary-grid{grid-template-columns:1fr}.actions button{width:100%}.meta{display:block}.meta span{display:block;margin:3px 0}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>Simulador de Elaboração do PDTIC</h1>
+<p><b>Você integra a Equipe de Elaboração do PDTIC</b></p>
+<span class="badge">20 decisões • feedback imediato • resultado final</span>
+</div></header>
+
+<main>
+<section class="panel role">
+<h2>Sua função no simulador</h2>
+<p>Você foi designado para integrar a <b>Equipe de Elaboração do PDTIC</b> de uma organização pública fictícia. A instituição precisa melhorar seus serviços digitais, alinhar a TIC aos objetivos institucionais e utilizar adequadamente pessoas, orçamento e demais recursos.</p>
+<p>Ao longo da atividade, você enfrentará <b>20 situações encadeadas</b>. Em cada etapa, analise o contexto, selecione a decisão que considera mais adequada e clique em <b>Tomar decisão</b>. O simulador informará imediatamente se a escolha é adequada ou inadequada e explicará o motivo.</p>
+<div class="flow"><span>Preparação</span><b>→</b><span>Diagnóstico</span><b>→</b><span>Planejamento</span><b>→</b><span>Aprovação</span><b>→</b><span>Publicação</span></div>
+</section>
+
+<section class="panel">
+<div class="meta"><span id="status">Decisão 1 de 20</span><span id="points">Decisões adequadas: 0</span></div>
+<div class="progress"><div id="pbar"></div></div>
+<div class="phasebar"><div id="ph1" class="phase">Preparação • 1–6</div><div id="ph2" class="phase">Diagnóstico • 7–13</div><div id="ph3" class="phase">Planejamento • 14–20</div></div>
+</section>
+
+<section id="decision" class="decision">
+<div class="meta"><span id="tag"></span><span id="step"></span></div>
+<h2 id="title"></h2>
+<div id="context" class="context"></div>
+<p id="ask"><b></b></p>
+<form id="form"><div id="options"></div>
+<div class="actions">
+<button id="decide" class="primary" type="submit">Tomar decisão</button>
+<button id="next" class="secondary" type="button" disabled>Próxima decisão</button>
+</div></form>
+<div id="feedback" class="feedback" aria-live="polite"></div>
+</section>
+
+<section id="result" class="result">
+<h2>PDTIC elaborado — resultado da simulação</h2>
+<div id="score" class="score"></div>
+<p id="message"></p>
+<div class="summary-grid">
+<div class="summary-card"><b>Preparação</b><span id="sPrep">0/6</span><small>Decisões adequadas</small></div>
+<div class="summary-card"><b>Diagnóstico</b><span id="sDiag">0/7</span><small>Decisões adequadas</small></div>
+<div class="summary-card"><b>Planejamento</b><span id="sPlan">0/7</span><small>Decisões adequadas</small></div>
+</div>
+<div class="flow"><span>Preparar</span><b>→</b><span>Diagnosticar</span><b>→</b><span>Inventariar</span><b>→</b><span>Priorizar</span><b>→</b><span>Definir metas e ações</span><b>→</b><span>Planejar recursos e riscos</span><b>→</b><span>Aprovar e publicar</span></div>
+<p class="legend">O objetivo é compreender a lógica de elaboração do PDTIC. Esta atividade acadêmica simplifica o processo formal para fins de aprendizagem.</p>
+<div class="actions"><button id="restart" class="primary" type="button">Refazer simulação</button><button id="historyBtn" class="secondary" type="button">Visualizar minhas decisões</button></div>
+<div id="history" class="log" hidden></div>
+</section>
+</main>
+<footer>Planejamento e Gestão Estratégica de TI • Módulo 6 • Simulação acadêmica de elaboração do PDTIC</footer>
+
+<script>
+const Q=[
+{p:"Preparação",tag:"Abrangência e período",title:"Início da elaboração",context:"A autoridade da organização determinou o início da elaboração do novo PDTIC. Antes de discutir projetos, contratações ou orçamento, a equipe precisa delimitar o trabalho.",ask:"Qual deve ser a primeira decisão?",opts:["Contratar uma solução para modernizar a infraestrutura.","Definir a abrangência e o período de vigência do PDTIC.","Elaborar imediatamente o Plano Orçamentário.","Publicar uma versão preliminar do PDTIC."],a:1,exp:"A definição da abrangência e do período estabelece os limites organizacionais e temporais do PDTIC e integra a fase de Preparação."},
+{p:"Preparação",tag:"Equipe de elaboração",title:"Quem conduzirá o trabalho?",context:"A abrangência e o período foram definidos. Agora é necessário organizar quem executará as atividades de elaboração.",ask:"Qual decisão é mais adequada?",opts:["Definir formalmente a Equipe de Elaboração do PDTIC.","Delegar toda a elaboração a um fornecedor de TIC.","Deixar a composição da equipe para depois do Diagnóstico.","Determinar que apenas a área financeira elabore o plano."],a:0,exp:"A Equipe de Elaboração deve ser definida na Preparação para conduzir as atividades do PDTIC de forma organizada."},
+{p:"Preparação",tag:"Metodologia",title:"Organização da forma de trabalho",context:"A equipe já foi constituída, mas seus integrantes precisam saber como as atividades serão conduzidas e quais procedimentos serão utilizados.",ask:"O que deve ser feito?",opts:["Descrever a metodologia de elaboração do PDTIC.","Executar as ações antes de definir o método.","Elaborar apenas um cronograma de contratações.","Iniciar a publicação dos resultados."],a:0,exp:"A descrição da metodologia integra a Preparação e estabelece como o processo de elaboração será conduzido."},
+{p:"Preparação",tag:"Documentos de referência",title:"Base para o planejamento",context:"A equipe percebe que não pode planejar a TIC isoladamente. Existem documentos institucionais e governamentais que precisam orientar o trabalho.",ask:"Qual decisão deve ser tomada?",opts:["Considerar somente os contratos atuais de TIC.","Identificar e reunir os documentos de referência aplicáveis.","Utilizar apenas informações fornecidas pela equipe técnica.","Aguardar a aprovação final para consultar documentos institucionais."],a:1,exp:"Os documentos de referência fornecem bases institucionais, estratégicas e normativas para a elaboração do PDTIC."},
+{p:"Preparação",tag:"Estratégias e diretrizes",title:"Alinhamento desde o início",context:"Os documentos foram reunidos. A equipe precisa garantir que as decisões futuras de TIC estejam relacionadas ao direcionamento institucional.",ask:"Qual providência é adequada?",opts:["Identificar as estratégias da organização e os princípios e diretrizes aplicáveis.","Priorizar somente demandas tecnológicas mais recentes.","Definir as necessidades sem considerar os objetivos institucionais.","Escolher previamente todos os fornecedores."],a:0,exp:"Identificar estratégias, princípios e diretrizes permite que o PDTIC seja elaborado em alinhamento com a organização."},
+{p:"Preparação",tag:"Plano de Trabalho",title:"Organização do projeto de elaboração",context:"Abrangência, equipe, metodologia, referências, estratégias e diretrizes já foram estabelecidas. É preciso organizar as atividades do próprio projeto de elaboração.",ask:"Qual artefato deve ser preparado e aprovado?",opts:["Inventário de Necessidades.","Plano de Trabalho do PDTIC.","Plano de Gestão de Riscos final.","Relatório de execução das ações."],a:1,exp:"O Plano de Trabalho organiza a condução da elaboração do PDTIC e encerra a estruturação essencial da fase de Preparação."},
+
+{p:"Diagnóstico",tag:"Situação atual",title:"Compreendendo a TIC existente",context:"A Preparação foi concluída. Antes de propor mudanças, a equipe precisa compreender a realidade da TIC na organização.",ask:"Qual deve ser o foco inicial do Diagnóstico?",opts:["Compreender a situação atual da TIC e levantar informações para identificar necessidades.","Executar imediatamente os projetos considerados urgentes.","Publicar o PDTIC antes de levantar necessidades.","Definir somente o orçamento para o próximo exercício."],a:0,exp:"O Diagnóstico busca compreender a situação atual da TIC e identificar as necessidades que deverão ser tratadas no planejamento."},
+{p:"Diagnóstico",tag:"Resultados anteriores",title:"Aprendendo com o planejamento anterior",context:"A organização possui um PDTIC anterior. A equipe quer evitar repetir problemas e aproveitar resultados já obtidos.",ask:"Qual decisão contribui para o Diagnóstico?",opts:["Ignorar o PDTIC anterior porque sua vigência terminou.","Analisar os resultados do PDTIC anterior, quando existente.","Copiar integralmente todas as metas anteriores.","Considerar somente ações que não foram executadas."],a:1,exp:"A análise dos resultados do planejamento anterior ajuda a compreender desempenho, pendências e aprendizados relevantes para o novo ciclo."},
+{p:"Diagnóstico",tag:"Análise SWOT",title:"Ambiente interno e externo",context:"A equipe identificou profissionais qualificados, infraestrutura desatualizada, oportunidades de novos serviços digitais e aumento das ameaças cibernéticas.",ask:"Qual instrumento é adequado para organizar essas informações?",opts:["Plano Orçamentário.","Análise SWOT.","Plano de Metas e Ações.","Cronograma de publicação."],a:1,exp:"A SWOT organiza forças e fraquezas do ambiente interno e oportunidades e ameaças relacionadas ao ambiente externo."},
+{p:"Diagnóstico",tag:"Necessidades de informação",title:"Informação necessária ao negócio",context:"As áreas finalísticas relatam dificuldade para obter informações confiáveis e tempestivas para apoiar suas atividades e decisões.",ask:"Como essa situação deve ser tratada no Diagnóstico?",opts:["Como necessidade de informação a ser identificada e registrada.","Como problema exclusivo da área financeira.","Somente como futura contratação de infraestrutura.","Como assunto sem relação com o PDTIC."],a:0,exp:"O Diagnóstico contempla a identificação das necessidades de informação que devem ser atendidas pela TIC."},
+{p:"Diagnóstico",tag:"Serviços e infraestrutura",title:"Capacidade tecnológica",context:"Foram relatadas indisponibilidades em serviços digitais e limitações na infraestrutura que os sustenta.",ask:"Qual decisão é coerente com o Diagnóstico?",opts:["Identificar necessidades relacionadas aos serviços e à infraestrutura de TIC.","Comprar equipamentos antes de registrar a necessidade.","Transformar toda indisponibilidade diretamente em contrato.","Adiar a análise até a fase de publicação."],a:0,exp:"Necessidades de serviços e de infraestrutura de TIC devem ser identificadas durante o Diagnóstico antes da definição das ações."},
+{p:"Diagnóstico",tag:"Contratações e pessoal",title:"Recursos necessários",context:"A equipe percebeu que algumas necessidades podem depender de contratações e que outras exigem capacidade e qualificação das pessoas de TIC.",ask:"O que deve ser feito?",opts:["Registrar necessidades de contratação e de pessoal de TIC quando aplicáveis.","Tratar somente necessidades que possam ser atendidas sem recursos.","Registrar apenas necessidades de infraestrutura.","Deixar todas as questões de pessoal para depois da publicação."],a:0,exp:"O levantamento do Diagnóstico considera diferentes tipos de necessidades, incluindo contratação e pessoal de TIC."},
+{p:"Diagnóstico",tag:"Inventário de Necessidades",title:"Consolidação do diagnóstico",context:"As necessidades de informação, serviços, infraestrutura, contratação e pessoal foram levantadas. Existem itens semelhantes e algumas dependências.",ask:"Qual deve ser o próximo passo?",opts:["Executar todas as necessidades simultaneamente.","Consolidar e alinhar as necessidades no Inventário de Necessidades.","Converter cada necessidade diretamente em uma aquisição.","Publicar a lista sem qualquer análise."],a:1,exp:"O Inventário de Necessidades consolida o levantamento e permite tratar redundâncias, coerência, interdependências e alinhamento estratégico antes de sua aprovação."},
+
+{p:"Planejamento",tag:"Priorização",title:"Recursos limitados",context:"O Inventário de Necessidades foi aprovado, mas a organização não possui recursos para atender tudo simultaneamente.",ask:"Qual decisão deve orientar o início do Planejamento?",opts:["Atender as necessidades na ordem em que foram registradas.","Priorizar as necessidades com critérios definidos.","Selecionar apenas as demandas da área de TIC.","Excluir automaticamente todas as necessidades de maior custo."],a:1,exp:"A priorização permite direcionar recursos às necessidades mais relevantes segundo critérios previamente definidos."},
+{p:"Planejamento",tag:"Metas",title:"Transformando necessidade em resultado",context:"Uma necessidade prioritária é aumentar a disponibilidade de um serviço digital crítico. A equipe precisa definir o resultado que deseja alcançar.",ask:"Qual decisão é mais adequada?",opts:["Definir uma meta mensurável associada à necessidade.","Registrar somente que o serviço deve melhorar.","Comprar equipamentos sem definir resultado esperado.","Criar uma nova análise SWOT para substituir a necessidade."],a:0,exp:"As metas devem expressar resultados que permitam acompanhar se a necessidade priorizada está sendo efetivamente atendida."},
+{p:"Planejamento",tag:"Ações",title:"Como alcançar a meta?",context:"A meta foi definida. Agora a equipe precisa estabelecer o que será realizado para produzir o resultado esperado.",ask:"O que deve ser definido?",opts:["As ações necessárias para alcançar a meta, com elementos para sua execução e acompanhamento.","Somente uma justificativa conceitual.","Apenas o nome de uma tecnologia.","Uma nova missão institucional."],a:0,exp:"As ações indicam como as metas serão alcançadas e integram o Plano de Metas e Ações."},
+{p:"Planejamento",tag:"Pessoal",title:"Capacidade para executar",context:"As ações exigem conhecimentos que a equipe atual possui apenas parcialmente. A execução pode ser comprometida sem capacidade adequada.",ask:"Qual decisão deve ser incorporada ao planejamento?",opts:["Planejar as ações de pessoal necessárias, incluindo desenvolvimento de competências quando pertinente.","Ignorar a lacuna porque o PDTIC trata apenas de tecnologia.","Cancelar automaticamente todas as ações.","Transferir todas as responsabilidades às áreas finalísticas."],a:0,exp:"O Planejamento deve considerar as necessidades relacionadas a pessoal para viabilizar a execução das metas e ações."},
+{p:"Planejamento",tag:"Orçamento",title:"Viabilidade financeira",context:"Metas e ações estão definidas. Algumas exigirão aquisição de bens ou contratação de serviços.",ask:"Como a equipe deve tratar os recursos financeiros?",opts:["Elaborar o planejamento orçamentário associado às necessidades e ações previstas.","Realizar as aquisições sem relacioná-las ao PDTIC.","Considerar orçamento apenas depois da publicação.","Excluir do PDTIC qualquer ação que tenha custo."],a:0,exp:"O Plano Orçamentário relaciona a execução do PDTIC aos recursos financeiros necessários e favorece a viabilidade do planejamento."},
+{p:"Planejamento",tag:"Riscos e fatores críticos",title:"Protegendo a execução",context:"A equipe identifica que atrasos em contratações, indisponibilidade de recursos e falta de apoio institucional podem comprometer o plano.",ask:"Qual decisão é adequada?",opts:["Ignorar os eventos porque ainda não ocorreram.","Identificar fatores críticos de sucesso e planejar o gerenciamento dos riscos.","Cancelar todas as metas sujeitas a incerteza.","Registrar os riscos somente após o término do PDTIC."],a:1,exp:"O Planejamento deve considerar fatores críticos de sucesso e riscos que possam afetar a execução, definindo respostas adequadas."},
+{p:"Planejamento",tag:"Consolidação, aprovação e publicação",title:"Conclusão da elaboração",context:"Necessidades foram priorizadas, metas e ações definidas e aspectos de pessoal, orçamento e riscos foram planejados. O conteúdo está pronto para formalização.",ask:"Qual sequência encerra adequadamente a elaboração?",opts:["Publicar → diagnosticar → aprovar.","Consolidar a minuta → submeter à aprovação → publicar o PDTIC.","Executar todas as ações → elaborar a minuta → definir a equipe.","Contratar fornecedores → publicar → elaborar o Plano de Trabalho."],a:1,exp:"Ao final, o conteúdo é consolidado em uma minuta, submetido à aprovação competente e, após aprovado, o PDTIC é publicado."}
+];
+
+let idx=0,points=0,locked=false;
+const answers=[];
+const $=id=>document.getElementById(id);
+function phaseNo(p){return p==="Preparação"?1:p==="Diagnóstico"?2:3}
+function phaseMax(p){return p==="Preparação"?6:7}
+function render(){
+ const x=Q[idx]; locked=false;
+ $("status").textContent=`Decisão ${idx+1} de ${Q.length}`;
+ $("points").textContent=`Decisões adequadas: ${points}`;
+ $("pbar").style.width=`${(idx/Q.length)*100}%`;
+ $("tag").textContent=x.p+" • "+x.tag;
+ $("step").textContent=`Etapa ${idx+1}`;
+ $("title").textContent=x.title;
+ $("context").textContent=x.context;
+ $("ask").innerHTML="<b>"+x.ask+"</b>";
+ $("options").innerHTML=x.opts.map((o,j)=>`<label class="option" id="op${j}"><input type="radio" name="choice" value="${j}"> <b>${String.fromCharCode(65+j)})</b> ${o}</label>`).join("");
+ $("feedback").className="feedback"; $("feedback").innerHTML="";
+ $("decide").disabled=false; $("next").disabled=true;
+ $("next").textContent=idx===Q.length-1?"Concluir simulação":"Próxima decisão";
+ [1,2,3].forEach(n=>{const el=$("ph"+n);el.classList.remove("active","done");if(n<phaseNo(x.p))el.classList.add("done");if(n===phaseNo(x.p))el.classList.add("active")});
+}
+$("form").addEventListener("submit",e=>{
+ e.preventDefault(); if(locked)return;
+ const sel=document.querySelector('input[name="choice"]:checked');
+ if(!sel){$("feedback").className="feedback wrong";$("feedback").innerHTML="<b>Selecione uma alternativa.</b> Analise o contexto e escolha a decisão que considera mais adequada.";return}
+ locked=true; const x=Q[idx],choice=Number(sel.value),ok=choice===x.a;
+ if(ok)points++;
+ answers.push({i:idx,choice,ok});
+ document.querySelectorAll('input[name="choice"]').forEach(r=>r.disabled=true);
+ document.querySelectorAll(".option").forEach(l=>l.classList.add("locked"));
+ $("op"+choice).classList.add(ok?"correct-choice":"wrong-choice");
+ if(!ok)$("op"+x.a).classList.add("correct-choice");
+ if(ok){$("feedback").className="feedback good";$("feedback").innerHTML=`<b>✓ Decisão adequada.</b><br>${x.exp}`}
+ else{$("feedback").className="feedback wrong";$("feedback").innerHTML=`<b>✗ Decisão inadequada.</b><br>A decisão recomendada é <b>${String.fromCharCode(65+x.a)}) ${x.opts[x.a]}</b><br><br>${x.exp}`}
+ $("points").textContent=`Decisões adequadas: ${points}`;
+ $("decide").disabled=true;$("next").disabled=false;
+});
+$("next").addEventListener("click",()=>{if(!locked)return;if(idx<Q.length-1){idx++;render();window.scrollTo({top:$("decision").offsetTop-12,behavior:"smooth"})}else finish()});
+function finish(){
+ $("decision").style.display="none";$("pbar").style.width="100%";$("status").textContent="20 decisões concluídas";
+ [1,2,3].forEach(n=>{$("ph"+n).classList.remove("active");$("ph"+n).classList.add("done")});
+ const pct=Math.round(points/Q.length*100);
+ $("score").textContent=`${points} de ${Q.length} decisões adequadas • ${pct}%`;
+ $("message").textContent=pct>=90?"Excelente desempenho. Você demonstrou domínio da sequência de elaboração do PDTIC e das principais decisões de Preparação, Diagnóstico e Planejamento.":pct>=75?"Muito bom. Você compreendeu a lógica central da elaboração do PDTIC. Revise as decisões inadequadas para consolidar o aprendizado.":pct>=60?"Bom avanço. Revise especialmente as relações entre diagnóstico, priorização, metas, recursos e riscos.":"Recomenda-se revisar as três fases do PDTIC e refazer a simulação, observando os feedbacks apresentados em cada decisão.";
+ const counts={Preparação:[0,0],Diagnóstico:[0,0],Planejamento:[0,0]};
+ answers.forEach(a=>{const p=Q[a.i].p;counts[p][1]++;if(a.ok)counts[p][0]++});
+ $("sPrep").textContent=`${counts.Preparação[0]}/6`;$("sDiag").textContent=`${counts.Diagnóstico[0]}/7`;$("sPlan").textContent=`${counts.Planejamento[0]}/7`;
+ $("result").classList.add("show");$("result").scrollIntoView({behavior:"smooth"});
+}
+$("historyBtn").addEventListener("click",()=>{
+ const h=$("history");h.hidden=!h.hidden;
+ if(!h.hidden){h.innerHTML=answers.map(a=>{const x=Q[a.i];return `<div class="log-item"><div class="${a.ok?"oktxt":"badtxt"}">${a.ok?"✓ Adequada":"✗ Inadequada"} — Decisão ${a.i+1}: ${x.tag}</div><div>Sua escolha: ${String.fromCharCode(65+a.choice)}) ${x.opts[a.choice]}</div>${a.ok?"":`<div>Recomendada: ${String.fromCharCode(65+x.a)}) ${x.opts[x.a]}</div>`}<small>${x.exp}</small></div>`}).join("");$("historyBtn").textContent="Ocultar minhas decisões"}else $("historyBtn").textContent="Visualizar minhas decisões";
+});
+$("restart").addEventListener("click",()=>{idx=0;points=0;locked=false;answers.length=0;$("result").classList.remove("show");$("decision").style.display="block";$("history").hidden=true;$("historyBtn").textContent="Visualizar minhas decisões";render();window.scrollTo({top:0,behavior:"smooth"})});
+render();
+</script>
+</body>
+</html>

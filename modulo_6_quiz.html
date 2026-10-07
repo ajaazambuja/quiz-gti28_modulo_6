@@ -1,0 +1,103 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Módulo 6 Quiz — Modelo de Planejamento para Atender às Necessidades do Governo</title><style>
+:root{--n:#07366f;--o:#f58220;--bg:#f4f7fb;--g:#176b3a;--r:#a12b2b;--muted:#687487}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#182333;line-height:1.5}
+header{background:linear-gradient(120deg,#052d5d,#084887);color:white;padding:34px 20px;border-bottom:7px solid var(--o)}
+.wrap,main{max-width:1000px;margin:auto}h1{margin:0 0 6px;font-size:clamp(28px,4vw,40px)}header p{margin:4px 0}
+main{padding:24px 16px 50px}.intro,.card,.result,.status{background:white;border-radius:14px;padding:20px;margin-bottom:17px;box-shadow:0 4px 16px #00000012}
+.intro h2,.status h2{color:var(--n);margin-top:0}.status{position:sticky;top:8px;z-index:5;padding:12px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.status .mini{flex:1;min-width:220px}.card h3{font-size:18px;color:var(--n);margin-bottom:12px}.counter{font-size:13px;color:var(--muted);font-weight:normal}
+.opt{display:block;border:1px solid #d9e0ea;border-radius:9px;padding:10px 12px;margin:8px 0;cursor:pointer;transition:.15s}.opt:hover{background:#f7f9fc;border-color:#aebbd0}
+.opt input{margin-right:8px}.fb{display:none;margin-top:10px;padding:11px 12px;border-radius:8px}.ok{display:block;background:#eaf7ef;color:var(--g)}.bad{display:block;background:#fff0f0;color:var(--r)}
+.qbtn{margin-top:10px;background:#e9eef6;color:var(--n);padding:9px 13px}.qbtn:hover{background:#dce5f1}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin:22px 0}button{border:0;border-radius:9px;padding:13px 18px;font-weight:bold;cursor:pointer}.primary{background:var(--n);color:white}.secondary{background:#e5eaf1}
+button:disabled{opacity:.45;cursor:not-allowed}.result{display:none;border-left:6px solid var(--o)}.show{display:block}.score{font-size:29px;font-weight:800;color:var(--n)}
+.barbg{height:10px;background:#e2e7ee;border-radius:10px;overflow:hidden;margin-top:10px}.bar{height:100%;width:0;background:var(--o);transition:.4s}
+.badge{background:#eef3fa;color:var(--n);padding:6px 10px;border-radius:20px;font-size:13px;font-weight:bold}
+.gitem{border-top:1px solid #e3e8ef;padding:12px 0}.gitem:first-child{border-top:0}
+footer{text-align:center;color:#667284;padding:20px}
+@media(max-width:600px){header{padding:26px 16px}.status{position:static}.actions button{width:100%}}
+</style></head><body>
+<header><div class="wrap"><h1>Módulo 6 Quiz</h1><p><b>Modelo de Planejamento para Atender às Necessidades do Governo</b></p><p>Administração Pública • Planejamento Estratégico • Governança de TI • PDTI • SISP</p></div></header>
+<main>
+<section class="intro"><h2>Desafio estratégico</h2>
+<p>As <b>15 questões objetivas</b> combinam conceitos e situações relacionadas ao conteúdo do Módulo 6. A proposta é revisar as particularidades do planejamento na Administração Pública, o planejamento estratégico de TI e o processo de elaboração do PDTI.</p>
+<p>Selecione uma alternativa e use <b>Corrigir questão</b> para receber feedback imediato. Ao final, clique em <b>Concluir respostas</b>. O <b>gabarito completo</b> será liberado somente depois que todas as questões forem respondidas.</p></section>
+<section class="status"><span class="badge" id="answered">Respondidas: 0 / 15</span><div class="mini"><div class="barbg"><div class="bar" id="progress"></div></div></div><span class="badge" id="checked">Corrigidas: 0 / 15</span></section>
+<div id="quiz"></div>
+<div class="actions"><button class="primary" onclick="concluirAtividade()">Concluir respostas</button><button id="btnGabarito" class="primary" type="button" onclick="visualizarGabarito()" disabled>Visualizar gabarito</button><button class="secondary" onclick="reiniciar()">Refazer atividade</button></div>
+<section id="res" class="result"><div id="score" class="score"></div><p id="msg"></p><div class="barbg"><div id="bar" class="bar"></div></div></section>
+<section id="gabaritoArea" class="result"><h2 style="color:var(--n);margin-top:0">Gabarito comentado</h2><div id="gabarito"></div></section>
+</main><footer>Planejamento e Gestão Estratégica de TI • Módulo 6</footer>
+<script>
+const Q=[
+{"q":"A Administração Pública difere da Administração Privada em aspectos fundamentais. Qual alternativa expressa corretamente uma dessas diferenças?","opts":["A Administração Pública tem como finalidade principal aumentar a riqueza dos acionistas.","Na Administração Pública, é lícito fazer tudo o que a lei não proíbe.","A Administração Pública busca atender de forma continuada às necessidades mais essenciais da coletividade.","A Administração Pública tem como objetivo estratégico geral conquistar participação de mercado."],"a":2,"exp":"O conteúdo do módulo destaca que a Administração Pública tem como objetivo atender continuamente às necessidades essenciais da coletividade e que sua atuação deve observar aquilo que a lei autoriza."},
+{"q":"Quanto à finalidade do planejamento e da gestão estratégica, qual alternativa apresenta corretamente a diferença entre os setores privado e público?","opts":["O setor privado busca a efetividade da missão institucional, enquanto o setor público busca competitividade.","O setor privado busca gerar resultados para aumentar a riqueza dos acionistas, enquanto o setor público busca promover o bem-estar coletivo e elevar a qualidade de vida da sociedade.","O setor privado busca a satisfação do cidadão, enquanto o setor público prioriza a satisfação dos acionistas.","Os dois setores possuem necessariamente a mesma finalidade e os mesmos objetivos estratégicos."],"a":1,"exp":"O material diferencia a finalidade dos setores: no privado, os resultados se relacionam à riqueza dos acionistas; no público, ao bem-estar coletivo e à qualidade de vida da sociedade."},
+{"q":"Qual alternativa reúne elementos que devem integrar o planejamento estratégico institucional?","opts":["Missão e visão institucional, objetivos estratégicos, análise da cultura organizacional, análise da situação atual, estratégias institucionais, plano de ação, portfólio de projetos e orçamento.","Somente missão, visão e orçamento.","Apenas projetos de TI, contratos e fornecedores.","Somente objetivos financeiros, indicadores de mercado e participação dos acionistas."],"a":0,"exp":"O planejamento estratégico institucional apresentado no módulo contempla missão e visão, objetivos estratégicos, cultura organizacional, situação atual, estratégias, plano de ação, portfólio de projetos e orçamento."},
+{"q":"No contexto do planejamento como obrigação, o que se espera das organizações públicas integrantes do SISP?","opts":["Que desenvolvam somente processos de planejamento financeiro.","Que desenvolvam processos de planejamento e monitoramento da área de TI, incluindo coordenação, supervisão e controle.","Que transfiram integralmente o planejamento de TI para fornecedores externos.","Que realizem planejamento de TI apenas quando houver aquisição de novos equipamentos."],"a":1,"exp":"O módulo estabelece que as organizações públicas integrantes do SISP devem desenvolver processos de planejamento e monitoramento da área de TI, abrangendo coordenação, supervisão e controle."},
+{"q":"Uma das diretrizes do planejamento estratégico de TI na gestão pública está relacionada aos recursos humanos. O que ela estabelece?","opts":["Reduzir o quadro de TI independentemente das necessidades da organização.","Manter somente profissionais terceirizados para os sistemas críticos.","Obter e manter uma estrutura de recursos humanos para TI, verificando se o quantitativo e a qualificação são suficientes para suas atribuições e para atender às demais unidades.","Concentrar a capacitação exclusivamente nos gestores da organização."],"a":2,"exp":"A diretriz orienta a organização a verificar tanto o quantitativo quanto a qualificação dos servidores de TI necessários ao desempenho das atribuições da área e ao atendimento das demais unidades."},
+{"q":"Em relação aos sistemas críticos da organização, uma das diretrizes do planejamento estratégico de TI recomenda:","opts":["Aumentar obrigatoriamente a dependência de terceiros.","Absorver a tecnologia dos sistemas críticos, reduzindo, na medida do possível e estrategicamente desejável, a dependência de terceiros.","Eliminar todos os sistemas desenvolvidos por terceiros.","Transferir o conhecimento dos sistemas críticos exclusivamente aos fornecedores."],"a":1,"exp":"O módulo orienta a absorção da tecnologia dos sistemas críticos para reduzir, quando possível e estrategicamente desejável, a dependência de terceiros."},
+{"q":"Como as contratações de serviços de TI devem se relacionar com o planejamento?","opts":["Devem ocorrer independentemente do planejamento estratégico de TI.","Devem ser definidas exclusivamente pelos fornecedores.","Devem ser vinculadas ao planejamento de TI, de modo que as aquisições ocorram em harmonia com o planejamento estratégico de tecnologia da informação.","Devem considerar apenas a disponibilidade imediata de orçamento."],"a":2,"exp":"Uma das diretrizes apresentadas é vincular as contratações de serviços de TI ao planejamento de TI, mantendo as aquisições em harmonia com o planejamento estratégico da área."},
+{"q":"Qual alternativa apresenta possíveis efeitos da ausência de planejamento estratégico de TI na Administração Pública Federal?","opts":["Maior alinhamento dos planos de TI e redução automática dos custos.","Planos de TI não alinhados às necessidades do negócio, descontinuidade de projetos, investimentos desnecessários e desperdício de recursos.","Maior satisfação dos usuários e fortalecimento automático da área de TI.","Eliminação da necessidade de consultas entre gestores de TI e demais gestores."],"a":1,"exp":"O material aponta diversos efeitos potenciais da fragilidade do planejamento, entre eles desalinhamento, descontinuidade de projetos, investimentos desnecessários e desperdício de recursos."},
+{"q":"Qual é a principal preocupação associada à consolidação de uma cultura de planejamento e governança de TI na Administração Pública?","opts":["Separar a área de tecnologia das áreas finalísticas.","Concentrar as decisões exclusivamente na equipe técnica.","Promover o alinhamento estratégico da área de tecnologia com as áreas finalísticas para favorecer a eficiência e a eficácia no uso dos recursos públicos.","Priorizar a aquisição de tecnologia independentemente das necessidades institucionais."],"a":2,"exp":"O conteúdo destaca o alinhamento estratégico entre TI e áreas finalísticas como elemento essencial para garantir eficiência e eficácia na utilização dos recursos públicos."},
+{"q":"Qual alternativa define corretamente o Plano Diretor de Tecnologia da Informação (PDTI)?","opts":["Documento destinado exclusivamente ao controle de equipamentos de informática.","Instrumento que permite nortear e acompanhar a atuação da área de TI, definindo estratégias e o plano de ação para implantá-las.","Relatório utilizado somente para registrar despesas anuais de TI.","Documento restrito à definição do quantitativo de pessoal da área de tecnologia."],"a":1,"exp":"O PDTI é apresentado como o instrumento que norteia e acompanha a atuação da TI, definindo estratégias e o plano de ação necessário para implementá-las."},
+{"q":"Quais são os papéis envolvidos na elaboração do PDTI apresentados no módulo?","opts":["Autoridade Máxima, Comitê de TI e Equipe de Elaboração do PDTI.","Somente Autoridade Máxima e fornecedores de TI.","Comitê de TI, auditor externo e fornecedores.","Somente Equipe de Elaboração do PDTI e área financeira."],"a":0,"exp":"O módulo identifica três papéis: Autoridade Máxima, Comitê de TI e Equipe de Elaboração do PDTI. A equipe é indicada pelo Comitê de TI considerando colaboradores das áreas finalísticas e da TI."},
+{"q":"Qual sequência apresenta corretamente as três fases do processo de elaboração do PDTI segundo o Guia do SISP?","opts":["Diagnóstico, Execução e Controle.","Preparação, Diagnóstico e Planejamento.","Planejamento, Contratação e Avaliação.","Preparação, Execução e Monitoramento."],"a":1,"exp":"O processo apresentado no Guia é composto por três fases que devem ser seguidas de forma apropriada: Preparação, Diagnóstico e Planejamento."},
+{"q":"Qual das atividades abaixo pertence à fase de Preparação do PDTI?","opts":["Definir a abrangência e o período do PDTI e identificar as estratégias da organização.","Executar integralmente o Plano de Metas e Ações.","Avaliar exclusivamente os resultados finais da implantação do PDTI.","Realizar apenas a contratação dos serviços de TI."],"a":0,"exp":"Na Preparação são definidos, entre outros aspectos, abrangência e período, equipe, metodologia, documentos de referência, estratégias, princípios, diretrizes e o plano de trabalho do PDTI."},
+{"q":"Qual é a principal característica da fase de Diagnóstico na elaboração do PDTI?","opts":["Executar os projetos previstos no plano.","Compreender a situação atual da TI na organização e identificar as necessidades que se espera resolver.","Definir exclusivamente o orçamento institucional.","Aprovar somente as contratações de bens e serviços."],"a":1,"exp":"A fase de Diagnóstico procura compreender a situação atual da TI e identificar as necessidades que deverão ser consideradas no planejamento."},
+{"q":"Na fase de Planejamento do PDTI, o Plano de Metas e Ações deve contemplar:","opts":["Somente os custos das aquisições de equipamentos.","Apenas a relação dos sistemas existentes.","Indicadores, responsáveis, prazos e recursos a serem alocados no esforço de realização das ações previstas.","Exclusivamente a estrutura organizacional da área de TI."],"a":2,"exp":"A fase de Planejamento estabelece planos e ações adequados aos objetivos definidos. O Plano de Metas e Ações deve contemplar indicadores, responsáveis, prazos e recursos."}
+];
+const quiz=document.getElementById('quiz');
+let corrected=new Set();
+
+function render(){
+ quiz.innerHTML=Q.map((x,i)=>`<section class="card" id="card${i}">
+ <h3><span class="counter">Questão ${i+1} de ${Q.length}</span><br>${x.q}</h3>
+ ${x.opts.map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}" onchange="updateStatus()"> ${String.fromCharCode(65+j)}) ${o}</label>`).join('')}
+ <button class="qbtn" type="button" onclick="corrigirQuestao(${i})">Corrigir questão</button>
+ <div id="fb${i}" class="fb"></div></section>`).join('');
+ updateStatus();
+}
+function selected(i){const el=document.querySelector(`input[name="q${i}"]:checked`);return el?Number(el.value):null}
+function corrigirQuestao(i){
+ const s=selected(i),fb=document.getElementById('fb'+i);
+ if(s===null){fb.className='fb bad';fb.innerHTML='<b>Questão não respondida.</b> Selecione uma alternativa antes de corrigir.';return}
+ corrected.add(i);
+ if(s===Q[i].a){fb.className='fb ok';fb.innerHTML=`<b>✓ Correto!</b> ${Q[i].exp}`}
+ else{fb.className='fb bad';fb.innerHTML=`<b>✗ Revise.</b> A alternativa correta é <b>${String.fromCharCode(65+Q[i].a)}) ${Q[i].opts[Q[i].a]}</b><br>${Q[i].exp}`}
+ updateStatus();
+}
+function updateStatus(){
+ let n=0;Q.forEach((_,i)=>{if(selected(i)!==null)n++});
+ document.getElementById('answered').textContent=`Respondidas: ${n} / ${Q.length}`;
+ document.getElementById('checked').textContent=`Corrigidas: ${corrected.size} / ${Q.length}`;
+ document.getElementById('progress').style.width=(n/Q.length*100)+'%';
+}
+function concluirAtividade(){
+ let missing=[];Q.forEach((_,i)=>{if(selected(i)===null)missing.push(i+1)});
+ if(missing.length){alert('Responda todas as questões antes de concluir. Faltam: '+missing.join(', '));document.getElementById('card'+(missing[0]-1)).scrollIntoView({behavior:'smooth'});return}
+ let acertos=0;Q.forEach((x,i)=>{if(selected(i)===x.a)acertos++});
+ const pct=Math.round(acertos/Q.length*100);
+ document.getElementById('score').textContent=`${acertos} de ${Q.length} acertos • ${pct}%`;
+ let msg=pct>=90?'Excelente domínio do conteúdo do Módulo 6! Você demonstrou segurança para relacionar planejamento público, planejamento estratégico de TI, governança e PDTI.':
+ pct>=75?'Muito bom! Você compreendeu os principais conceitos do Módulo 6. Revise os feedbacks das questões que exigiram mais atenção.':
+ pct>=60?'Bom avanço. Use o gabarito comentado para reforçar o planejamento estratégico de TI e as fases de elaboração do PDTI.':
+ 'Continue praticando. Releia os conceitos do Módulo 6 e refaça o desafio para consolidar o planejamento de TI na Administração Pública e o processo de elaboração do PDTI.';
+ document.getElementById('msg').textContent=msg;document.getElementById('bar').style.width=pct+'%';
+ document.getElementById('res').classList.add('show');document.getElementById('btnGabarito').disabled=false;
+ document.getElementById('res').scrollIntoView({behavior:'smooth'});
+}
+function visualizarGabarito(){
+ const g=document.getElementById('gabarito');
+ g.innerHTML=Q.map((x,i)=>`<div class="gitem"><b>${i+1}. ${String.fromCharCode(65+x.a)}) ${x.opts[x.a]}</b><br><span>${x.exp}</span></div>`).join('');
+ document.getElementById('gabaritoArea').classList.add('show');
+ document.getElementById('gabaritoArea').scrollIntoView({behavior:'smooth'});
+}
+function reiniciar(){
+ document.querySelectorAll('input[type=radio]').forEach(x=>x.checked=false);
+ document.querySelectorAll('.fb').forEach(x=>{x.className='fb';x.innerHTML=''});
+ corrected.clear();document.getElementById('res').classList.remove('show');document.getElementById('gabaritoArea').classList.remove('show');
+ document.getElementById('btnGabarito').disabled=true;document.getElementById('bar').style.width='0';updateStatus();window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script></body></html>
